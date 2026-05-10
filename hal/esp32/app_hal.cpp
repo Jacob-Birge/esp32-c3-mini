@@ -2213,11 +2213,20 @@ void hal_loop()
 
     if (ui_home == ui_clockScreen)
     {
-      lv_label_set_text(ui_hourLabel, watch.getHourZ().c_str());
-      lv_label_set_text(ui_dayLabel, watch.getTime("%A").c_str());
-      lv_label_set_text(ui_minuteLabel, watch.getTime("%M").c_str());
-      lv_label_set_text(ui_dateLabel, watch.getTime("%d\n%b").c_str());
-      lv_label_set_text(ui_amPmLabel, watch.getAmPmC(false).c_str());
+      static int lastClockMinute = -1;
+      static int lastClockHour = -1;
+      int curClockMinute = watch.getMinute();
+      int curClockHour = watch.getHour(true);
+      if (curClockMinute != lastClockMinute || curClockHour != lastClockHour)
+      {
+        lastClockMinute = curClockMinute;
+        lastClockHour = curClockHour;
+        lv_label_set_text(ui_hourLabel, watch.getHourZ().c_str());
+        lv_label_set_text(ui_dayLabel, watch.getTime("%A").c_str());
+        lv_label_set_text(ui_minuteLabel, watch.getTime("%M").c_str());
+        lv_label_set_text(ui_dateLabel, watch.getTime("%d\n%b").c_str());
+        lv_label_set_text(ui_amPmLabel, watch.getAmPmC(false).c_str());
+      }
     }
     else
     {

@@ -6,7 +6,7 @@ Tasks are ordered by estimated impact-to-effort ratio. Test after each change.
 
 ## CPU & Battery
 
-- [ ] **1. Cache clock label updates** — Only call `lv_label_set_text` when the displayed second/minute actually changes, not every 5ms loop iteration. (`hal/esp32/app_hal.cpp` — clock label update block ~line 2210)
+- [x] **1. Cache clock label updates** — Only call `lv_label_set_text` when the displayed second/minute actually changes, not every 5ms loop iteration. (`hal/esp32/app_hal.cpp` — clock label update block ~line 2210)
 
 - [ ] **2. Throttle watchface updates** — Cache the last-rendered time; skip `update_faces()` when nothing has changed. (`hal/esp32/app_hal.cpp` — `update_faces` call ~line 2462)
 
@@ -26,7 +26,7 @@ Tasks are ordered by estimated impact-to-effort ratio. Test after each change.
 
 ## Flash & RAM
 
-- [ ] **7. Disable unused watchfaces** — Comment out `#define ENABLE_FACE_XXX` entries for faces not used on the target board. Each face is a large compiled-in image array. (`hal/esp32/app_hal.h` — face enable section)
+- [x] **7. Disable unused watchfaces** — Comment out `#define ENABLE_FACE_XXX` entries for faces not used on the target board. Each face is a large compiled-in image array. (`hal/esp32/app_hal.h` — face enable section)
 
 ---
 
