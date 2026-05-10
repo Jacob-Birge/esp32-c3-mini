@@ -22,6 +22,8 @@
 
 const char *ui_info_text = "v" UI_VERSION " [fbiego]";
 
+const int ui_spd = 200; // default screen change speed
+
 ///////////////////// VARIABLES ////////////////////
 void pulseCall_Animation(lv_obj_t *TargetObject, int delay);
 void analogSecond_Animation(lv_obj_t *TargetObject, int delay);
@@ -591,20 +593,20 @@ void ui_event_clockScreen(lv_event_t *e)
       if (event_code == LV_EVENT_GESTURE && lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_RIGHT)
       {
             toAppList = false; // flag was not open from app list
-            _ui_screen_change(ui_notificationScreen, LV_SCR_LOAD_ANIM_OVER_RIGHT, 500, 0);
+            _ui_screen_change(ui_notificationScreen, LV_SCR_LOAD_ANIM_OVER_RIGHT, ui_spd, 0);
       }
       if (event_code == LV_EVENT_GESTURE && lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_LEFT)
       {
-            _ui_screen_change(ui_appListScreen, LV_SCR_LOAD_ANIM_OVER_LEFT, 500, 0);
+            _ui_screen_change(ui_appListScreen, LV_SCR_LOAD_ANIM_OVER_LEFT, ui_spd, 0);
       }
       if (event_code == LV_EVENT_GESTURE && lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_BOTTOM)
       {
-            _ui_screen_change(ui_controlScreen, LV_SCR_LOAD_ANIM_OVER_BOTTOM, 500, 0);
+            _ui_screen_change(ui_controlScreen, LV_SCR_LOAD_ANIM_OVER_BOTTOM, ui_spd, 0);
       }
       if (event_code == LV_EVENT_GESTURE && lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_TOP)
       {
             toAppList = false; // flag was not open from app list
-            _ui_screen_change(ui_weatherScreen, LV_SCR_LOAD_ANIM_OVER_TOP, 500, 0);
+            _ui_screen_change(ui_weatherScreen, LV_SCR_LOAD_ANIM_OVER_TOP, ui_spd, 0);
       }
       if (event_code == LV_EVENT_SCREEN_LOAD_START)
       {
@@ -613,7 +615,7 @@ void ui_event_clockScreen(lv_event_t *e)
       if (event_code == LV_EVENT_LONG_PRESSED)
       {
             // ui_home = ui_pcbScreen;
-            // _ui_screen_change(ui_home, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0);
+            // _ui_screen_change(ui_home, LV_SCR_LOAD_ANIM_FADE_ON, ui_spd, 0);
             onWatchfaceChange(e);
       }
 }
@@ -624,7 +626,7 @@ void ui_event_appListScreen(lv_event_t *e)
       lv_obj_t *target = lv_event_get_target(e);
       if (event_code == LV_EVENT_GESTURE && lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_RIGHT)
       {
-            _ui_screen_change(ui_home, LV_SCR_LOAD_ANIM_OUT_RIGHT, 500, 0);
+            _ui_screen_change(ui_home, LV_SCR_LOAD_ANIM_OUT_RIGHT, ui_spd, 0);
       }
 }
 
@@ -634,7 +636,7 @@ void ui_event_gameListScreen(lv_event_t *e)
       lv_obj_t *target = lv_event_get_target(e);
       if (event_code == LV_EVENT_GESTURE && lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_RIGHT)
       {
-            _ui_screen_change(ui_appListScreen, LV_SCR_LOAD_ANIM_OUT_RIGHT, 500, 0);
+            _ui_screen_change(ui_appListScreen, LV_SCR_LOAD_ANIM_OUT_RIGHT, ui_spd, 0);
       }
 }
 
@@ -673,7 +675,7 @@ void ui_event_weatherScreen(lv_event_t *e)
                   }
                   else
                   {
-                        _ui_screen_change(ui_home, LV_SCR_LOAD_ANIM_OUT_BOTTOM, 500, 0); // load home
+                        _ui_screen_change(ui_home, LV_SCR_LOAD_ANIM_OUT_BOTTOM, ui_spd, 0); // load home
                   }
             }
       }
@@ -690,7 +692,7 @@ void ui_event_weatherScreen(lv_event_t *e)
             {
                   if (toAppList)
                   {
-                        _ui_screen_change(ui_appListScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 500, 0);
+                        _ui_screen_change(ui_appListScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, ui_spd, 0);
                         return;
                   }
             }
@@ -733,7 +735,7 @@ void ui_event_notificationScreen(lv_event_t *e)
                   }
                   else
                   {
-                        _ui_screen_change(ui_home, LV_SCR_LOAD_ANIM_OUT_LEFT, 500, 0);
+                        _ui_screen_change(ui_home, LV_SCR_LOAD_ANIM_OUT_LEFT, ui_spd, 0);
                   }
             }
       }
@@ -743,7 +745,7 @@ void ui_event_notificationScreen(lv_event_t *e)
             {
                   if (!lv_obj_has_flag(ui_messageList, LV_OBJ_FLAG_HIDDEN))
                   {
-                        _ui_screen_change(ui_appListScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 500, 0);
+                        _ui_screen_change(ui_appListScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, ui_spd, 0);
                         return;
                   }
             }
@@ -764,7 +766,7 @@ void ui_event_settingsScreen(lv_event_t *e)
       lv_obj_t *target = lv_event_get_target(e);
       if (event_code == LV_EVENT_GESTURE && lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_RIGHT)
       {
-            _ui_screen_change(ui_appListScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 500, 0);
+            _ui_screen_change(ui_appListScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, ui_spd, 0);
       }
 }
 
@@ -774,7 +776,7 @@ void ui_event_appInfoScreen(lv_event_t *e)
       lv_obj_t *target = lv_event_get_target(e);
       if (event_code == LV_EVENT_GESTURE && lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_RIGHT)
       {
-            _ui_screen_change(ui_appListScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 500, 0);
+            _ui_screen_change(ui_appListScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, ui_spd, 0);
       }
 }
 
@@ -784,7 +786,7 @@ void ui_event_callScreen(lv_event_t *e)
       lv_obj_t *target = lv_event_get_target(e);
       if (event_code == LV_EVENT_GESTURE && lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_RIGHT)
       {
-            _ui_screen_change(ui_home, LV_SCR_LOAD_ANIM_FADE_OUT, 500, 0);
+            _ui_screen_change(ui_home, LV_SCR_LOAD_ANIM_FADE_OUT, ui_spd, 0);
       }
 }
 
@@ -796,11 +798,11 @@ void ui_event_qrScreen(lv_event_t *e)
       {
             if (toAppList)
             {
-                  _ui_screen_change(ui_appListScreen, LV_SCR_LOAD_ANIM_MOVE_TOP, 500, 0);
+                  _ui_screen_change(ui_appListScreen, LV_SCR_LOAD_ANIM_MOVE_TOP, ui_spd, 0);
             }
             else
             {
-                  _ui_screen_change(ui_controlScreen, LV_SCR_LOAD_ANIM_MOVE_TOP, 500, 0);
+                  _ui_screen_change(ui_controlScreen, LV_SCR_LOAD_ANIM_MOVE_TOP, ui_spd, 0);
             }
       }
 }
@@ -819,7 +821,7 @@ void ui_event_logoScreen(lv_event_t *e)
 
       if (event_code == LV_EVENT_GESTURE && lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_RIGHT)
       {
-            _ui_screen_change(ui_settingsScreen, LV_SCR_LOAD_ANIM_FADE_OUT, 500, 0);
+            _ui_screen_change(ui_settingsScreen, LV_SCR_LOAD_ANIM_FADE_OUT, ui_spd, 0);
             return;
       }
       if (event_code == LV_EVENT_SCREEN_LOADED)
@@ -869,7 +871,7 @@ void ui_event_connectScreen(lv_event_t *e)
       lv_obj_t *target = lv_event_get_target(e);
       if (event_code == LV_EVENT_GESTURE && lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_RIGHT)
       {
-            _ui_screen_change(ui_settingsScreen, LV_SCR_LOAD_ANIM_FADE_OUT, 500, 0);
+            _ui_screen_change(ui_settingsScreen, LV_SCR_LOAD_ANIM_FADE_OUT, ui_spd, 0);
       }
 }
 
@@ -957,7 +959,7 @@ void ui_event_alertStatePanel(lv_event_t *e)
       lv_event_code_t event_code = lv_event_get_code(e);
       if (event_code == LV_EVENT_CLICKED)
       {
-            _ui_screen_change(ui_alertScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 500, 0);
+            _ui_screen_change(ui_alertScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, ui_spd, 0);
       }
 }
 
@@ -974,7 +976,7 @@ void ui_event_alertScreen(lv_event_t *e)
 
       if (event_code == LV_EVENT_GESTURE && lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_RIGHT)
       {
-            _ui_screen_change(ui_settingsScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 500, 0);
+            _ui_screen_change(ui_settingsScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, ui_spd, 0);
             return;
       }
 }
@@ -1076,7 +1078,7 @@ void ui_event_kenyaPanel(lv_event_t *e)
       lv_obj_t *target = lv_event_get_target(e);
       if (event_code == LV_EVENT_CLICKED)
       {
-            _ui_screen_change(ui_logoScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0);
+            _ui_screen_change(ui_logoScreen, LV_SCR_LOAD_ANIM_FADE_ON, ui_spd, 0);
       }
 }
 
@@ -1093,7 +1095,7 @@ void ui_event_aboutPanel(lv_event_t *e)
       lv_obj_t *target = lv_event_get_target(e);
       if (event_code == LV_EVENT_CLICKED)
       {
-            _ui_screen_change(ui_connectScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0);
+            _ui_screen_change(ui_connectScreen, LV_SCR_LOAD_ANIM_FADE_ON, ui_spd, 0);
       }
 }
 
@@ -1104,7 +1106,7 @@ void ui_event_controlScreen(lv_event_t *e)
       lv_obj_t *target = lv_event_get_target(e);
       if (event_code == LV_EVENT_GESTURE && lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_TOP)
       {
-            _ui_screen_change(ui_home, LV_SCR_LOAD_ANIM_OUT_TOP, 500, 0);
+            _ui_screen_change(ui_home, LV_SCR_LOAD_ANIM_OUT_TOP, ui_spd, 0);
             _ui_state_modify(ui_phoneSearchButton, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
 
             onEndSearch(e);
@@ -1210,7 +1212,7 @@ void ui_event_findPhone(lv_event_t *e)
       lv_obj_t *target = lv_event_get_target(e);
       if (event_code == LV_EVENT_GESTURE && lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_RIGHT)
       {
-            _ui_screen_change(ui_appListScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 500, 0);
+            _ui_screen_change(ui_appListScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, ui_spd, 0);
       }
 
       if (event_code == LV_EVENT_SCREEN_UNLOAD_START)
@@ -1268,7 +1270,7 @@ void ui_event_qrCodeButton(lv_event_t *e)
             toAppList = false;
             _ui_state_modify(ui_phoneSearchButton, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
             onEndSearch(e);
-            lv_screen_load_anim(ui_qrScreen, LV_SCR_LOAD_ANIM_MOVE_BOTTOM, 500, 0, false);
+            lv_screen_load_anim(ui_qrScreen, LV_SCR_LOAD_ANIM_MOVE_BOTTOM, ui_spd, 0, false);
       }
 }
 
@@ -1284,7 +1286,7 @@ void ui_event_closeControlButton(lv_event_t *e)
       lv_obj_t *target = lv_event_get_target(e);
       if (event_code == LV_EVENT_CLICKED)
       {
-            _ui_screen_change(ui_home, LV_SCR_LOAD_ANIM_OUT_TOP, 500, 0);
+            _ui_screen_change(ui_home, LV_SCR_LOAD_ANIM_OUT_TOP, ui_spd, 0);
             _ui_state_modify(ui_phoneSearchButton, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
 
             onEndSearch(e);
@@ -1327,7 +1329,7 @@ void ui_event_faceSelected(lv_event_t *e)
                   }
             }
 
-            lv_screen_load_anim(ui_home, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, false);
+            lv_screen_load_anim(ui_home, LV_SCR_LOAD_ANIM_FADE_ON, ui_spd, 0, false);
 
             onFaceSelected(e);
       }
@@ -1373,25 +1375,25 @@ void onAppListClicked(lv_event_t *e)
       {
       case 0:
             toAppList = true; // flag was open from app list
-            _ui_screen_change(ui_notificationScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 500, 0);
+            _ui_screen_change(ui_notificationScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, ui_spd, 0);
             break;
       case 1:
             toAppList = true; // flag was open from app list
-            _ui_screen_change(ui_weatherScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 500, 0);
+            _ui_screen_change(ui_weatherScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, ui_spd, 0);
             break;
       case 2:
-            _ui_screen_change(ui_settingsScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 500, 0);
+            _ui_screen_change(ui_settingsScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, ui_spd, 0);
             break;
       case 3:
-            _ui_screen_change(ui_appInfoScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 500, 0);
+            _ui_screen_change(ui_appInfoScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, ui_spd, 0);
             break;
       case 4:
             toAppList = true; // flag was open from app list
-            _ui_screen_change(ui_qrScreen, LV_SCR_LOAD_ANIM_MOVE_BOTTOM, 500, 0);
+            _ui_screen_change(ui_qrScreen, LV_SCR_LOAD_ANIM_MOVE_BOTTOM, ui_spd, 0);
             break;
       case 5:
 #ifdef USE_SDL
-            _ui_screen_change(ui_faceSelect, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0);
+            _ui_screen_change(ui_faceSelect, LV_SCR_LOAD_ANIM_FADE_ON, ui_spd, 0);
 #else
             lv_obj_clean(ui_fileManagerPanel);
 
@@ -1404,17 +1406,17 @@ void onAppListClicked(lv_event_t *e)
 
             lv_obj_scroll_by(ui_fileManagerPanel, 0, -1, LV_ANIM_ON);
 
-            _ui_screen_change(ui_filesScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 500, 0);
+            _ui_screen_change(ui_filesScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, ui_spd, 0);
 #endif
             break;
       case 6:
-            _ui_screen_change(ui_findPhoneScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 500, 0);
+            _ui_screen_change(ui_findPhoneScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, ui_spd, 0);
             break;
       case 7:
-            _ui_screen_change(ui_gameListScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 500, 0);
+            _ui_screen_change(ui_gameListScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, ui_spd, 0);
             break;
       case 8:
-            _ui_screen_change(ui_filesScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 500, 0);
+            _ui_screen_change(ui_filesScreen, LV_SCR_LOAD_ANIM_MOVE_LEFT, ui_spd, 0);
             break;
       }
 }
@@ -1473,20 +1475,20 @@ void watchfaceEvents(lv_event_t *e)
       if (event_code == LV_EVENT_GESTURE && lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_RIGHT)
       {
             toAppList = false; // flag was not open from app list
-            lv_screen_load_anim(ui_notificationScreen, LV_SCR_LOAD_ANIM_OVER_RIGHT, 500, 0, false);
+            lv_screen_load_anim(ui_notificationScreen, LV_SCR_LOAD_ANIM_OVER_RIGHT, ui_spd, 0, false);
       }
       if (event_code == LV_EVENT_GESTURE && lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_LEFT)
       {
-            lv_screen_load_anim(ui_appListScreen, LV_SCR_LOAD_ANIM_OVER_LEFT, 500, 0, false);
+            lv_screen_load_anim(ui_appListScreen, LV_SCR_LOAD_ANIM_OVER_LEFT, ui_spd, 0, false);
       }
       if (event_code == LV_EVENT_GESTURE && lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_BOTTOM)
       {
-            lv_screen_load_anim(ui_controlScreen, LV_SCR_LOAD_ANIM_OVER_BOTTOM, 500, 0, false);
+            lv_screen_load_anim(ui_controlScreen, LV_SCR_LOAD_ANIM_OVER_BOTTOM, ui_spd, 0, false);
       }
       if (event_code == LV_EVENT_GESTURE && lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_TOP)
       {
             toAppList = false; // flag was not open from app list
-            lv_screen_load_anim(ui_weatherScreen, LV_SCR_LOAD_ANIM_OVER_TOP, 500, 0, false);
+            lv_screen_load_anim(ui_weatherScreen, LV_SCR_LOAD_ANIM_OVER_TOP, ui_spd, 0, false);
       }
       if (event_code == LV_EVENT_LONG_PRESSED_REPEAT)
       {
@@ -1497,7 +1499,7 @@ void watchfaceEvents(lv_event_t *e)
                   return;
             }
             // ui_home = ui_clockScreen;
-            lv_screen_load_anim(ui_faceSelect, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, false);
+            lv_screen_load_anim(ui_faceSelect, LV_SCR_LOAD_ANIM_FADE_ON, ui_spd, 0, false);
             on_watchface_list_open();
       }
 }
@@ -1564,19 +1566,19 @@ void ui_event_gameSelected(lv_event_t *e)
                   showError("Game Error", "Game root object not initialized");
                   return;
             }
-            lv_screen_load_anim(*games[index].watchface, LV_SCR_LOAD_ANIM_MOVE_LEFT, 500, 0, false);
+            lv_screen_load_anim(*games[index].watchface, LV_SCR_LOAD_ANIM_MOVE_LEFT, ui_spd, 0, false);
       }
 }
 
 void ui_gameExit()
 {
-      lv_screen_load_anim(ui_gameListScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 500, 0, false);
+      lv_screen_load_anim(ui_gameListScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, ui_spd, 0, false);
 }
 
 void ui_app_exit()
 {
 
-      lv_screen_load_anim(ui_gameListScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 500, 0, false);
+      lv_screen_load_anim(ui_gameListScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, ui_spd, 0, false);
 }
 
 void ui_app_load(lv_obj_t **screen, void (*screen_init)(void))
@@ -1591,7 +1593,7 @@ void ui_app_load(lv_obj_t **screen, void (*screen_init)(void))
       if (*screen == NULL)
             screen_init();
 
-      lv_screen_load_anim(*screen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 500, 0, false);
+      lv_screen_load_anim(*screen, LV_SCR_LOAD_ANIM_MOVE_LEFT, ui_spd, 0, false);
 }
 
 void ui_event_errorClose(lv_event_t *e)
@@ -1612,7 +1614,7 @@ void ui_event_face_select(lv_event_t *e)
       {
             return;
       }
-      lv_screen_load_anim(ui_faceSelect, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, false);
+      lv_screen_load_anim(ui_faceSelect, LV_SCR_LOAD_ANIM_FADE_ON, ui_spd, 0, false);
 }
 
 void set_alert_states(int32_t states)

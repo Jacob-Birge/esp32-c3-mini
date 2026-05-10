@@ -110,6 +110,8 @@ AccelData acc;
 GyroData gyro;
 #endif
 
+static const int ui_spd = 200; // default screen change speed
+
 static const uint32_t screenWidth = SCREEN_WIDTH;
 static const uint32_t screenHeight = SCREEN_HEIGHT;
 
@@ -843,7 +845,7 @@ void onCustomDelete(lv_event_t *e)
   showError("Delete", "The watchface will be deleted from storage, ESP32 will restart after deletion");
   if (deleteCustomFace(customFacePaths[index]))
   {
-    lv_screen_load_anim(ui_appListScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, 500, 0, false);
+    lv_screen_load_anim(ui_appListScreen, LV_SCR_LOAD_ANIM_MOVE_RIGHT, ui_spd, 0, false);
     ESP.restart();
   }
   else
@@ -982,7 +984,7 @@ void ringerCallback(String caller, bool state)
     Serial.print("Ringer: Incoming call from ");
     Serial.println(caller);
     lv_label_set_text(ui_callName, caller.c_str());
-    lv_screen_load_anim(ui_callScreen, LV_SCR_LOAD_ANIM_FADE_IN, 500, 0, false);
+    lv_screen_load_anim(ui_callScreen, LV_SCR_LOAD_ANIM_FADE_IN, ui_spd, 0, false);
   }
   else
   {
@@ -991,7 +993,7 @@ void ringerCallback(String caller, bool state)
     // load last active screen
     if (actScr == ui_callScreen && lastActScr != nullptr)
     {
-      lv_screen_load_anim(lastActScr, LV_SCR_LOAD_ANIM_FADE_OUT, 500, 0, false);
+      lv_screen_load_anim(lastActScr, LV_SCR_LOAD_ANIM_FADE_OUT, ui_spd, 0, false);
     }
   }
   screenTimer.active = true;
@@ -1086,14 +1088,14 @@ void configCallback(Config config, uint32_t a, uint32_t b)
     {
       screenTimer.time = millis() + 50;
       lastActScr = actScr;
-      lv_screen_load_anim(ui_cameraScreen, LV_SCR_LOAD_ANIM_FADE_IN, 500, 0, false);
+      lv_screen_load_anim(ui_cameraScreen, LV_SCR_LOAD_ANIM_FADE_IN, ui_spd, 0, false);
       screenTimer.active = true;
     }
     else
     {
       if (actScr == ui_cameraScreen && lastActScr != nullptr)
       {
-        lv_screen_load_anim(lastActScr, LV_SCR_LOAD_ANIM_FADE_OUT, 500, 0, false);
+        lv_screen_load_anim(lastActScr, LV_SCR_LOAD_ANIM_FADE_OUT, ui_spd, 0, false);
       }
       screenTimer.active = true;
     }
@@ -1353,7 +1355,7 @@ void onCustomFaceSelected(int pathIndex)
     ui_home = face_custom_root;
   }
 
-  lv_screen_load_anim(ui_home, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, false);
+  lv_screen_load_anim(ui_home, LV_SCR_LOAD_ANIM_FADE_ON, ui_spd, 0, false);
 
   prefs.putString("custom", customFacePaths[pathIndex]);
 #endif
@@ -2265,14 +2267,14 @@ void hal_loop()
         {
           ui_navScreen_screen_init();
         }
-        lv_screen_load_anim(get_nav_screen(), LV_SCR_LOAD_ANIM_FADE_IN, 500, 0, false);
+        lv_screen_load_anim(get_nav_screen(), LV_SCR_LOAD_ANIM_FADE_IN, ui_spd, 0, false);
         gameActive = true;
         screenTimer.active = true;
       }
       if (actScr == get_nav_screen() && !nav.active && navSwitch && lastActScr != nullptr)
       {
         screenTimer.active = true;
-        lv_screen_load_anim(lastActScr, LV_SCR_LOAD_ANIM_FADE_OUT, 500, 0, false);
+        lv_screen_load_anim(lastActScr, LV_SCR_LOAD_ANIM_FADE_OUT, ui_spd, 0, false);
       }
 #endif
       navIconState(nav.active && nav.hasIcon);
