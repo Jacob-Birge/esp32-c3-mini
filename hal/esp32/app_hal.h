@@ -42,9 +42,9 @@
 // 240x240 watchfaces
 
 #define ENABLE_FACE_75_2 // (Analog)
-#define ENABLE_FACE_756_2 // (Red)
-#define ENABLE_FACE_RADAR // (Radar)
-#define ENABLE_FACE_34_2 // (Shadow) 
+//#define ENABLE_FACE_756_2 // (Red)
+//#define ENABLE_FACE_RADAR // (Radar)
+//#define ENABLE_FACE_34_2 // (Shadow) 
 
 #if (FLASH_SIZE >= 8)
 #define ENABLE_FACE_ELECROW // elecrow analog
@@ -71,11 +71,16 @@
 #define ENABLE_RTC
 
 #ifndef ENABLE_FACE_ELECROW
-#define ENABLE_FACE_ELECROW //  elecrow analog
+//#define ENABLE_FACE_ELECROW //  elecrow analog
 #if defined(ELECROW_C3)
 #undef ENABLE_FACE_34_2
 #endif
 #endif
+#endif
+
+#ifdef ELECROW_C3
+#undef ENABLE_FACE_756_2
+#undef ENABLE_FACE_RADAR
 #endif
 
 #if defined(M5_STACK_DIAL) || defined(VIEWE_KNOB_15) || defined(ELECROW_S3)

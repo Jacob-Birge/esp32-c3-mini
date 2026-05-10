@@ -1846,6 +1846,7 @@ void hal_setup()
   set_pin_io(2, true);
   set_pin_io(3, true);
   set_pin_io(4, true);
+  Wire.end(); // Release so tft.init() can reinitialize the I2C bus cleanly
 #endif
 
 #ifdef M5_STACK_DIAL

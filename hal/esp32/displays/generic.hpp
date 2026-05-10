@@ -27,7 +27,8 @@ public:
       // * Due to the ESP-IDF version upgrade, VSPI_HOST, The HSPI_HOST specification is deprecated, so if you get an error, use SPI2_HOST or SPI3_HOST instead.
       cfg.spi_mode = 0;                       // Set SPI communication mode (0 ~ 3)
       cfg.freq_write = 80000000;              // SPI time (up to 80MHz, four or five inputs divided by 80MHz to get an integer)
-      cfg.freq_read = 20000000;               // SPI time when connected cfg.spi_3wire = true; // Set true if receiving is done via MOSI pin
+      cfg.freq_read = 20000000;               // SPI read frequency
+      cfg.spi_3wire = (MISO < 0);             // 3-wire mode when no MISO pin
       cfg.use_lock = true;                    // Usage lock time setting true
       cfg.dma_channel = SPI_DMA_CH_AUTO;      // Set the DMA channel to use (0=DMA not used / 1=1ch / 2=ch / SPI_DMA_CH_AUTO=automatic setting) // * Due to the ESP-IDF version upgrade, SPI_DMA_CH_AUTO (automatic setting) is now recommended for the DMA channel. Specifying 1ch or 2ch is no longer recommended.
       cfg.pin_sclk = SCLK;                    // Set the SPI SCLK pin number
@@ -65,6 +66,7 @@ public:
       _panel_instance.config(cfg);
     }
 
+#if defined(BL) && (BL >= 0)
     { // Set backlight control. (delete if not necessary)
 
       auto cfg = _light_instance.config(); // Get the structure for backlight configuration.
@@ -77,6 +79,7 @@ public:
       _light_instance.config(cfg);
       _panel_instance.setLight(&_light_instance); // Sets the backlight to the panel.
     }
+#endif
     
 
     { // Sets touchscreen control. (Delete if not needed)

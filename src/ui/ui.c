@@ -4155,7 +4155,7 @@ void ui_connectScreen_screen_init(void)
 void ui_watchfaces_init(void)
 {
       numFaces = 0;
-      registerWatchface_cb("Default", &digital_preview, &ui_clockScreen, NULL); // register the default watchface
+      // registerWatchface_cb("Default", &digital_preview, &ui_clockScreen, NULL); // register the default watchface
 
       // register other watchfaces by initializing them and passing the register callback
       init_face_elecrow(registerWatchface_cb);
