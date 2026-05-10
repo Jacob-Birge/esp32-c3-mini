@@ -8,9 +8,9 @@ Tasks are ordered by estimated impact-to-effort ratio. Test after each change.
 
 - [x] **1. Cache clock label updates** — Only call `lv_label_set_text` when the displayed second/minute actually changes, not every 5ms loop iteration. (`hal/esp32/app_hal.cpp` — clock label update block ~line 2210)
 
-- [ ] **2. Throttle watchface updates** — Cache the last-rendered time; skip `update_faces()` when nothing has changed. (`hal/esp32/app_hal.cpp` — `update_faces` call ~line 2462)
+- [x] **2. Throttle watchface updates** — Cache the last-rendered time; skip `update_faces()` when nothing has changed. (`hal/esp32/app_hal.cpp` — `update_faces` call ~line 2462)
 
-- [ ] **3. Reduce LVGL refresh rate** — Increase `LV_DEF_REFR_PERIOD` from 33ms (30 FPS) to 50ms (20 FPS) or 100ms (10 FPS) for a clock UI that barely moves. (`include/lv_conf.h` line 72)
+- [x] **3. Reduce LVGL refresh rate** — Increase `LV_DEF_REFR_PERIOD` from 33ms (30 FPS) to 50ms (20 FPS) or 100ms (10 FPS) for a clock UI that barely moves. (`include/lv_conf.h` line 72)
 
 ---
 

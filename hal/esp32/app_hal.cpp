@@ -2230,7 +2230,19 @@ void hal_loop()
     }
     else
     {
-      update_faces();
+      static int lastFaceSecond = -1;
+      static int lastFaceMinute = -1;
+      static int lastFaceHour = -1;
+      int curFaceSecond = watch.getSecond();
+      int curFaceMinute = watch.getMinute();
+      int curFaceHour = watch.getHour(true);
+      if (curFaceSecond != lastFaceSecond || curFaceMinute != lastFaceMinute || curFaceHour != lastFaceHour)
+      {
+        lastFaceSecond = curFaceSecond;
+        lastFaceMinute = curFaceMinute;
+        lastFaceHour = curFaceHour;
+        update_faces();
+      }
     }
 
     lv_disp_t *display = lv_display_get_default();
