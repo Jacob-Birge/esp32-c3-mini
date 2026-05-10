@@ -52,6 +52,8 @@
 
 
 #include "driver/rtc_io.h"
+#include "driver/gpio.h"
+#include "esp_sleep.h"
 
 #include "FS.h"
 #include "FFat.h"
@@ -138,6 +140,8 @@ bool readIMU = false;
 bool updateSeconds = false;
 bool hasUpdatedSec = false;
 bool navSwitch = false;
+bool screenIsOff = false;
+volatile bool touchIntFired = false;
 
 static long oldPosition = 0;
 
@@ -249,6 +253,13 @@ void rounder_event_cb(lv_event_t *e)
   area->y2 = ((y2 >> 1) << 1) + 1;
 }
 
+#if defined(TP_INT) && (TP_INT >= 0)
+IRAM_ATTR void touch_isr()
+{
+  touchIntFired = true;
+}
+#endif
+
 /*Read the touchpad*/
 void my_touchpad_read(lv_indev_t *indev_driver, lv_indev_data_t *data)
 {
@@ -268,7 +279,21 @@ void my_touchpad_read(lv_indev_t *indev_driver, lv_indev_data_t *data)
   //   touched = tft.getTouch(&touchX, &touchY);
   // }
 
+#if defined(TP_INT) && (TP_INT >= 0)
+  static bool wasPressed = false;
+  if (touchIntFired || wasPressed)
+  {
+    touchIntFired = false;
+    touched = tft.getTouch(&touchX, &touchY);
+    wasPressed = touched;
+  }
+  else
+  {
+    touched = false;
+  }
+#else
   touched = tft.getTouch(&touchX, &touchY);
+#endif
 
   if (!touched)
   {
@@ -289,6 +314,7 @@ void screen_on(long extra)
 {
   screenTimer.time = millis() + extra;
   screenTimer.active = true;
+  screenIsOff = false;
 }
 
 bool check_alert_state(AlertType type)
@@ -1928,6 +1954,10 @@ void hal_setup()
   static auto *lvInput = lv_indev_create();
   lv_indev_set_type(lvInput, LV_INDEV_TYPE_POINTER);
   lv_indev_set_read_cb(lvInput, my_touchpad_read);
+#if defined(TP_INT) && (TP_INT >= 0)
+  pinMode(TP_INT, INPUT);
+  attachInterrupt(digitalPinToInterrupt(TP_INT), touch_isr, FALLING);
+#endif
   // lvInput->gesture_limit = LV_CLAMP(50, ((SCREEN_WIDTH * 2) / 3), 255);
 
   // lv_log_register_print_cb(my_log_cb);
@@ -2029,7 +2059,7 @@ void hal_setup()
   // load saved preferences
   int tm = prefs.getInt("timeout", 0);
 
-  int br = prefs.getInt("brightness", 100);
+  int br = prefs.getInt("brightness", 70);
   circular = prefs.getBool("circular", false);
   alertSwitch = prefs.getBool("alerts", false);
   navSwitch = prefs.getBool("autonav", false);
@@ -2180,7 +2210,25 @@ void hal_loop()
   if (!transfer)
   {
     lv_timer_handler(); // Update the UI-
-    delay(5);
+    if (screenIsOff)
+    {
+      // Enter light sleep until touch or button wakes the device
+#if defined(TP_INT) && (TP_INT >= 0)
+      gpio_wakeup_enable((gpio_num_t)TP_INT, GPIO_INTR_LOW_LEVEL);
+      esp_sleep_enable_gpio_wakeup();
+#endif
+#if defined(BUTTON_HOME) && (BUTTON_HOME != -1)
+      gpio_wakeup_enable((gpio_num_t)BUTTON_HOME, GPIO_INTR_LOW_LEVEL);
+      esp_sleep_enable_gpio_wakeup();
+#endif
+      esp_light_sleep_start();
+      // After wakeup, let my_touchpad_read know a touch may be pending
+      touchIntFired = true;
+    }
+    else
+    {
+      vTaskDelay(pdMS_TO_TICKS(5));
+    }
 
     watch.loop();
 
@@ -2365,6 +2413,7 @@ void hal_loop()
       {
         Timber.w("Screen timeout");
         screenTimer.active = false;
+        screenIsOff = true;
 
         screenBrightness(0);
         lv_screen_load(ui_home);

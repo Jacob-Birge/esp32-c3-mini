@@ -16,11 +16,11 @@ Tasks are ordered by estimated impact-to-effort ratio. Test after each change.
 
 ## Power (Idle / Sleep)
 
-- [ ] **4. Implement light sleep on screen-off** — After the screen timeout fires, call `esp_light_sleep_start()` and wake via touch INT pin or button interrupt instead of running the full 5ms loop. This can reduce idle current from ~15 mA to <1 mA. (`hal/esp32/app_hal.cpp` — screen timeout handler ~line 2340)
+- [x] **4. Implement light sleep on screen-off** — After the screen timeout fires, call `esp_light_sleep_start()` and wake via touch INT pin or button interrupt instead of running the full 5ms loop. This can reduce idle current from ~15 mA to <1 mA. (`hal/esp32/app_hal.cpp` — screen timeout handler ~line 2340)
 
-- [ ] **5. Reduce default backlight brightness** — Lower the default PWM value in `screenBrightness()`. The backlight is the single largest current draw. (`hal/esp32/app_hal.cpp` ~line 532)
+- [x] **5. Reduce default backlight brightness** — Lower the default PWM value in `screenBrightness()`. The backlight is the single largest current draw. (`hal/esp32/app_hal.cpp` ~line 532)
 
-- [ ] **6. Replace touch polling with INT pin interrupt** — The CST816S has an interrupt pin. Subscribe to it instead of reading I2C every 5ms. (`hal/esp32/app_hal.cpp` — `my_touchpad_read` ~line 206; `hal/esp32/displays/generic.hpp` — touch config)
+- [x] **6. Replace touch polling with INT pin interrupt** — The CST816S has an interrupt pin. Subscribe to it instead of reading I2C every 5ms. (`hal/esp32/app_hal.cpp` — `my_touchpad_read` ~line 206; `hal/esp32/displays/generic.hpp` — touch config)
 
 ---
 
@@ -36,4 +36,4 @@ Tasks are ordered by estimated impact-to-effort ratio. Test after each change.
 
 - [ ] **9. Reduce IMU poll rate** — The QMI8658C app polls every 100ms. Change to 250ms if smooth real-time display is not required. (`src/apps/qmi8658c/qmi8658c.c` line 73)
 
-- [ ] **10. Replace 5ms delay with FreeRTOS yield** — `delay(5)` in `hal_loop` is not a true sleep. Use `vTaskDelay(pdMS_TO_TICKS(5))` so the FreeRTOS scheduler can run other tasks properly. (`hal/esp32/app_hal.cpp` ~line 2181)
+- [x] **10. Replace 5ms delay with FreeRTOS yield** — `delay(5)` in `hal_loop` is not a true sleep. Use `vTaskDelay(pdMS_TO_TICKS(5))` so the FreeRTOS scheduler can run other tasks properly. (`hal/esp32/app_hal.cpp` ~line 2181)
